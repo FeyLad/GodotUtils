@@ -183,6 +183,26 @@ public partial class Interpolator : Node
                 targetValue,
                 easingFunction)
         { }
+
+        public static InterpolateObject ModulateFadeInterpolate(Control control, Color target, Func<float, float> easingFunction = null)
+        {
+            return new InterpolateObject(
+                a => control.Modulate = a,
+                control.Modulate,
+                target,
+                easingFunction
+            );
+        }
+
+        public static InterpolateObject ModulateFadeInterpolate(Node2D control, Color target, Func<float, float> easingFunction = null)
+        {
+            return new InterpolateObject(
+                a => control.Modulate = a,
+                control.Modulate,
+                target,
+                easingFunction
+            );
+        }
     }
 
     public class InterpolateObject<T> : InterpolateObject

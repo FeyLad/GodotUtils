@@ -7,7 +7,7 @@ using System.Text.Json;
 public static class ExtensionMethods
 {
     private static int PHYSICAL_SIZE => LevelGenerator.PHYSICAL_SIZE;
-    //private static readonly Random rng = new Random();
+    public static readonly Random RNG = new Random();
 
     // Math
 
@@ -24,6 +24,11 @@ public static class ExtensionMethods
     public static Vector2I ToV2I(this Vector2 vector2)
     {
         return new Vector2I(Mathf.RoundToInt(vector2.X), Mathf.RoundToInt(vector2.Y));
+    }
+
+    public static Vector2 ToV2(this Vector2I vector2)
+    {
+        return new Vector2(vector2.X, vector2.Y);
     }
 
     public static float Distance(this Vector2I origin, Vector2I target)
@@ -76,28 +81,38 @@ public static class ExtensionMethods
         return (float)(random.NextDouble() * (maxValue - minValue) + minValue);
     }
 
-    // public static T RandomItemInList<T>(this List<T> list)
-    // {
-    //     return list.Count > 0 ? list[rng.Next(0, list.Count)] : default;
-    // }
+    public static float RandomValueInRange(this Vector2 v2)
+    {
+        return RNG.NextFloat(v2);
+    }
 
-    // public static T RandomItemInList<T>(this T[] list)
-    // {
-    //     return list.Length > 0 ? list[rng.Next(0, list.Length)] : default;
-    // }
+    public static int RandomValueInRange(this Vector2I v2i)
+    {
+        return RNG.Next(v2i.X, v2i.Y);
+    }
 
-    // public static List<T> Shuffle<T>(this List<T> list)
-    // {
-    //     List<T> temp = list.FindAll(a => true);
-    //     list = new List<T>();
-    //     while (temp.Count > 0)
-    //     {
-    //         int i = rng.Next(0, temp.Count);
-    //         list.Add(temp[i]);
-    //         temp.RemoveAt(i);
-    //     }
-    //     return list;
-    // }
+    public static T RandomItemInList<T>(this List<T> list)
+    {
+        return list.Count > 0 ? list[RNG.Next(0, list.Count)] : default;
+    }
+
+    public static T RandomItemInList<T>(this T[] list)
+    {
+        return list.Length > 0 ? list[RNG.Next(0, list.Length)] : default;
+    }
+
+    public static List<T> Shuffle<T>(this List<T> list)
+    {
+        List<T> temp = list.FindAll(a => true);
+        list = new List<T>();
+        while (temp.Count > 0)
+        {
+            int i = RNG.Next(0, temp.Count);
+            list.Add(temp[i]);
+            temp.RemoveAt(i);
+        }
+        return list;
+    }
 
     // Timers
 
@@ -254,8 +269,22 @@ public static class ExtensionMethods
         return result;
     }
 
+    public static S Sum<T, S>(this List<T> list, Func<T, S> toNum) where S : System.Numerics.INumber<S>
+    {
+        S result = default;
+        list.ForEach(a => result += toNum(a));
+        return result;
+    }
+
+    public static S Sum<T, S>(this List<T> list, Func<T, int, S> toNum) where S : System.Numerics.INumber<S>
+    {
+        S result = default;
+        list.ForEach((a, i) => result += toNum(a, i));
+        return result;
+    }
+
     // Dictionary extensions
-	
+
     public static S SafeGet<T, S>(this Dictionary<T, S> dictionary, T key, S defaultValue = default)
     {
         return dictionary.ContainsKey(key) ? dictionary[key] : defaultValue;
