@@ -46,7 +46,7 @@ public partial class SceneController : Node
         base._Input(@event);
         if (@event is InputEventKey keyEvent && !keyEvent.IsEcho() && keyEvent.Pressed)
         {
-            if (keyEvent.Keycode == Key.Escape || keyEvent.Keycode == Key.F5)
+            if (keyEvent.Keycode == Key.Escape || keyEvent.Keycode == Key.F5 || keyEvent.Keycode == Key.F11)
             {
                 DisplayServer.WindowSetMode(DisplayServer.WindowGetMode() == DisplayServer.WindowMode.ExclusiveFullscreen ?
                     DisplayServer.WindowMode.Windowed :

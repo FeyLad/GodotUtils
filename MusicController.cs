@@ -105,7 +105,7 @@ public partial class MusicController : Node
                 {
                     AudioStreamPlayer temp = previousPlayer;
                     previousPlayer = currentPlayer;
-                    currentPlayer = previousPlayer;
+                    currentPlayer = temp;
                     previousPlayer.Stop();
                     currentTrack = name;
                 };

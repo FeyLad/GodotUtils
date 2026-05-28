@@ -196,6 +196,8 @@ public static class ExtensionMethods
 
     public static bool BeginsWith(this string source, char value) => source.StartsWith(value);
 
+    public static string ToAlternatingCase(this string source) => string.Join("", source.ToList().ConvertAll((a, i) => i % 2 == 0 ? char.ToUpper(a) : char.ToLower(a)));
+
     // Rich text
 
     public static string RichTextColor(this string source, Color color) => source.RichTextColor(color.ToHtml());
